@@ -8,7 +8,6 @@ import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
-
 internal class GmsLocationCallsiteVisitor(
     private val classContext: ClassContext,
     private val asmVersion: Int,
