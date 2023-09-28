@@ -1,5 +1,6 @@
 name: Publish package to GitHub Packages
 on:
+  pull_request:
   push:
     branches:
       - main
@@ -20,6 +21,6 @@ jobs:
       - name: Publish package
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
         with:
-          arguments: publishAllPublicationsToGitHubPackagesRepository
+          arguments: publishAllPublicationsToGitHubPackagesRepository --dry-run
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
