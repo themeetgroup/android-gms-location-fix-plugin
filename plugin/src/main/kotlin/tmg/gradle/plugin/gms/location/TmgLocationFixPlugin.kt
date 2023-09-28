@@ -41,15 +41,17 @@ public abstract class TmgLocationFixPlugin : Plugin<Project> {
                         variant.compileConfiguration.dependencyConstraints.add(constraint)
                     }
 
-                    // Add task actions for reporting
-                    val transformTask = "transform${variant.name.replaceFirstChar { it.uppercaseChar() }}ClassesWithAsm"
-                    // FIXME: task name might change
-                    project.tasks.maybeNamed(transformTask) {
-                        val variantCallsites = callsites.computeIfAbsent(variant.name) { mutableSetOf() }
+                    project.afterEvaluate {
+                        // Add task actions for reporting
+                        val transformTask = "transform${variant.name.replaceFirstChar { it.uppercaseChar() }}ClassesWithAsm"
+                        // FIXME: task name might change
+                        project.tasks.maybeNamed(transformTask) {
+                            val variantCallsites = callsites.computeIfAbsent(variant.name) { mutableSetOf() }
 
-                        it.doLast(ReportCallsitesAction(ext, variantCallsites))
-                        if (ext.strict.getOrElse(false) && ext.forceApi.isPresent) {
-                            it.doLast(StrictAction(ext, variantCallsites))
+                            it.doLast(ReportCallsitesAction(ext, variantCallsites))
+                            if (ext.strict.getOrElse(false) && ext.forceApi.isPresent) {
+                                it.doLast(StrictAction(ext, variantCallsites))
+                            }
                         }
                     }
                 }

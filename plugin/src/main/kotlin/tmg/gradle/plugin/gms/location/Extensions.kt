@@ -8,6 +8,14 @@ import org.gradle.api.tasks.TaskCollection
 
 internal fun <T : Task> TaskCollection<T>.maybeNamed(name: String, action: Action<T>) {
     runCatching { named(name, action) }
+        .onFailure {
+            // Task was not ready yet, wait for it to be added.
+            whenTaskAdded {
+                if (it.name == name) {
+                    action.execute(it)
+                }
+            }
+        }
 }
 
 internal fun DependencyConstraintHandler.createStrictConstraint(forcing: Int, variantName: String): DependencyConstraint {
