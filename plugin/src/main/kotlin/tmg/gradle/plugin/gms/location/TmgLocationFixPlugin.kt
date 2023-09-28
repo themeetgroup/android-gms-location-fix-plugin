@@ -26,7 +26,12 @@ public abstract class TmgLocationFixPlugin : Plugin<Project> {
                         config.variantName.set(variant.name)
                         config.enabled.convention(ext.enabled)
                         config.strict.convention(ext.strict)
-                        config.forceApi.convention(ext.forceApi.map { it.also { check(it == 20 || it == 21) } })
+                        config.forceApi.convention(ext.forceApi.map {
+                            check(it == 20 || it == 21) {
+                                "Invalid value for tmgLocationFix.forceApi=$it. Must be either 20 or 21."
+                            }
+                            it
+                        })
                     }
 
                     // Add the strict constraint only if configured
