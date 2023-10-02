@@ -29,6 +29,13 @@ kotlin {
 
 publishing {
     repositories {
-        // TODO
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/themeetgroup/android-gms-location-fix-plugin")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 }
